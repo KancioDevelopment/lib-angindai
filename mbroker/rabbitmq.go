@@ -60,7 +60,7 @@ func (session *SessionMQ) handleReconnect(addr string) {
 		conn, err := session.connect(addr)
 
 		if err != nil {
-			log.Println("Failed to connect. Retrying...")
+			log.Println("Failed to connect. Retrying...", addr)
 
 			select {
 			case <-session.done:
