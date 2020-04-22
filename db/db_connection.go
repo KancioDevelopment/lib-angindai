@@ -6,8 +6,11 @@ import (
 	"fmt"
 
 	_ "github.com/lib/pq"
+	"go.elastic.co/apm/module/apmsql"
+	_ "go.elastic.co/apm/module/apmsql/pq"
 )
 
+// DBOptions is ...
 type DBOptions struct {
 	Host           string
 	Port           int
@@ -33,6 +36,7 @@ func isValidSSLMode(sslMode string) bool {
 	return false
 }
 
+// Connect is ..
 func Connect(options DBOptions) (*sql.DB, error) {
 	sslMode := "sslmode=disabled"
 
@@ -57,6 +61,43 @@ func Connect(options DBOptions) (*sql.DB, error) {
 		sslMode)
 
 	db, err := sql.Open("postgres", dbConfig)
+	if err != nil {
+		return nil, err
+	}
+
+	err = db.Ping()
+	if err != nil {
+		return nil, err
+	}
+
+	return db, nil
+}
+
+// ConnectAPMPQ is ...
+func ConnectAPMPQ(options DBOptions) (*sql.DB, error) {
+	sslMode := "sslmode=disabled"
+
+	if options.SSLMode != "" && options.SSLMode != "disabled" {
+		if !isValidSSLMode(options.SSLMode) {
+			return nil, errors.New("arjuna: invalid ssl mode")
+		}
+
+		sslMode = fmt.Sprintf("sslmode=%s&sslrootcert=%s&sslcert=%s&sslkey=%s",
+			options.SSLMode,
+			options.SSLRootCert,
+			options.SSLCert,
+			options.SSLKey)
+	}
+
+	dbConfig := fmt.Sprintf("postgresql://%s:%s@%s:%d/%s?%s",
+		options.Username,
+		options.Password,
+		options.Host,
+		options.Port,
+		options.DBName,
+		sslMode)
+
+	db, err := apmsql.Open("postgres", dbConfig)
 	if err != nil {
 		return nil, err
 	}
