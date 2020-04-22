@@ -1,7 +1,7 @@
 package mail
 
 import (
-	"github.com/matcornic/hermes"
+	"github.com/matcornic/hermes/v2"
 )
 
 type ResetPasswordModel struct {

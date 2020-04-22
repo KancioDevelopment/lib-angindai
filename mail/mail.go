@@ -11,7 +11,8 @@ import (
 )
 
 const (
-	MimeTypeHtml MimeType = "text/html"
+	// MimeTypeHTML is ...
+	MimeTypeHTML MimeType = "text/html"
 )
 
 var (
@@ -19,8 +20,10 @@ var (
 	sendGridInit *sendgrid.Client
 )
 
+// MimeType is ...
 type MimeType string
 
+// MailOption is a ...
 type MailOption struct {
 	From         string
 	To           string
@@ -32,6 +35,7 @@ type MailOption struct {
 	SenderName   string
 }
 
+// MultiMailOption is a ...
 type MultiMailOption struct {
 	From
 	Subject      string
@@ -40,11 +44,13 @@ type MultiMailOption struct {
 	BodyMimeType MimeType
 }
 
+// From is ...
 type From struct {
 	Name  string
 	Email string
 }
 
+// Tos is ...
 type Tos struct {
 	To []From
 }

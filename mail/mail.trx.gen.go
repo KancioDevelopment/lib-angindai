@@ -1,39 +1,45 @@
 package mail
 
 import (
-	"github.com/matcornic/hermes"
+	"github.com/matcornic/hermes/v2"
 )
 
-type EmailContentOption struct {
-	Product     Product
-	ClientName  string
-	Intros      []string
-	Message     string
-	Instruction string
-	DataTable   [][]Data
-	Button      Button
-	Outros      []string
-	MimeType    MimeType
-}
+type (
+	// EmailContentOption is a ...
+	EmailContentOption struct {
+		Product     Product
+		ClientName  string
+		Intros      []string
+		Message     string
+		Instruction string
+		DataTable   [][]Data
+		Button      Button
+		Outros      []string
+		MimeType    MimeType
+	}
+	// Product is a ..
+	Product struct {
+		Name string
+		Link string
+		Logo string
+	}
 
-type Product struct {
-	Name string
-	Link string
-	Logo string
-}
+	// Button is a ...
+	Button struct {
+		Color     string // example: #22BC66
+		TextColor string
+		Text      string
+		Link      string
+	}
 
-type Button struct {
-	Color     string // example: #22BC66
-	TextColor string
-	Text      string
-	Link      string
-}
+	// Data is a ..
+	Data struct {
+		Key   string
+		Value string
+	}
+)
 
-type Data struct {
-	Key   string
-	Value string
-}
-
+// GenerateTransactionalEmail is ...
 func GenerateTransactionalEmail(option EmailContentOption) (string, error) {
 	// Configure hermes by setting a theme and your product info
 	h := hermes.Hermes{
